@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/lisijun/pylsj/flasktest/flask'
+let g:netrw_dirhist_2='/home/lisijun/pylsj/flasktest'
+let g:netrw_dirhist_3='/home/lisijun/pylsj/robotics'
+let g:netrw_dirhist_4='/home/lisijun/pylsj/unity_server'
