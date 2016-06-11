@@ -68,20 +68,7 @@ if has("autocmd")
   auto FileType eruby set ft=html
 
   let g:cssColorVimDoNotMessMyUpdatetime = 1
-
-  let g:user_emmet_install_global = 0
-  "let g:user_emmet_leader_key='<C-D>'
-  let g:user_emmet_expandabbr_key='<C-e>'
-  let g:user_emmet_settings={
-    \'php':{
-        \'extends':'html',
-        \'filters':'c',
-    \},
-    \'xml':{
-        \'extends':'html',
-    \},
-  \}
-  autocmd FileType html,css,php EmmetInstall
+ autocmd FileType html,css,php EmmetInstall
 
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
@@ -160,7 +147,19 @@ func!Run()
 endfunc
 
 " filetype plugin on
-
+let g:user_emmet_install_global = 0
+"let g:user_emmet_leader_key='<C-D>'
+let g:user_emmet_expandabbr_key='<C-e>'
+let g:user_emmet_settings={
+\'php':{
+    \'extends':'html',
+    \'filters':'c',
+\},
+\'xml':{
+    \'extends':'html',
+\},
+\}
+ 
 nnoremap<F3> :NERDTreeToggle<CR>
 let NERDTreeMouseMode = 2
 
@@ -179,9 +178,14 @@ set completeopt=menuone,menu,longest
 
 imap<C-k> <C-x><C-o>
 inoremap {<CR> {<CR>}<ESC>ko
-inoremap ??<CR> <?php<CR>ini_set('display_errors',true);<CR>?><ESC>O
-
 nnoremap <C-n> :w<CR>:bn<CR>
-nnoremap <C-p> :w<CR>:bN<CR>
+nnoremap <C-N> :w<CR>:bN<CR>
 
-" let g:ycm_min_num_of_chars_for_completion = 3
+set laststatus=2
+let g:ctrlp_max_height = 30
+set nofoldenable
+let mapleader=","
+
+" ropevim configuration
+let ropevim_vim_completion=1
+let ropevim_extended_complete=1
