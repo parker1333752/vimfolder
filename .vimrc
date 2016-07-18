@@ -11,19 +11,21 @@ if v:progname =~? "evim"
     finish
 endif
 
+set t_Co=2
+
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
-execute pathogen#infect()
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-if has("vms")
+" if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file
-endif
+"else
+  "set backup		" keep a backup file
+"endif
+"
 set history=50		" keep 50 lines of command line history
 "set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
@@ -51,6 +53,7 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
+
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
 
@@ -62,13 +65,13 @@ if has("autocmd")
   filetype plugin indent on
   autocmd FileType php set omnifunc=phpcomplete#CompletePHP
   autocmd FileType python set omnifunc=pythoncomplete#Complete
+  autocmd FileType python setlocal omnifunc=RopeCompleteFunc
   autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
   autocmd FileType css set omnifunc=csscomplete#CompleteCSS
   autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-  auto FileType eruby set ft=html
 
   let g:cssColorVimDoNotMessMyUpdatetime = 1
- autocmd FileType html,css,php EmmetInstall
+  autocmd FileType html,css,php EmmetInstall
 
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
@@ -161,7 +164,7 @@ let g:user_emmet_settings={
 \}
  
 nnoremap<F3> :NERDTreeToggle<CR>
-let NERDTreeMouseMode = 2
+let NERDTreeMouseMode = 3
 
 set tags+=/home/lisijun/Ccode/stl/tags
 let OmniCpp_NamespaceSearch = 1
@@ -181,11 +184,29 @@ inoremap {<CR> {<CR>}<ESC>ko
 nnoremap <C-n> :w<CR>:bn<CR>
 nnoremap <C-N> :w<CR>:bN<CR>
 
+" ctrlp settings
 set laststatus=2
 let g:ctrlp_max_height = 30
 set nofoldenable
-let mapleader=","
 
 " ropevim configuration
-let ropevim_vim_completion=1
+" let ropevim_vim_completion=1
 let ropevim_extended_complete=1
+let ropevim_enable_autoimport=1
+let ropevim_enable_shortcuts=1
+let ropevim_guess_project=1
+let ropevim_open_files_in_tabs = 1
+" Above rope setting maybe useless since rope was introduced by pymode
+let pymode_rope_goto_definition_cmd='e'
+set <M-/>=/
+set <M-?>=?
+" map <M-/> :call RopeCodeAssist()<CR>
+" map <M-?> :call RopeLuckyAssist()<CR>
+
+" python-mode setting 
+let g:pymode_options_colorcolumn = 0
+
+" powerline settings
+let g:Powerline_symbols='fancy'
+
+execute pathogen#infect()
