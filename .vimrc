@@ -6,6 +6,9 @@
 " To use it, copy it to
 "     for Unix and OS/2:  ~
 
+set t_Co=256
+colorscheme molokai
+
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
     finish
@@ -47,7 +50,7 @@ endif
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
-  syntax on
+  " syntax on
   set hlsearch
 endif
 
@@ -65,10 +68,9 @@ if has("autocmd")
   autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
   autocmd FileType css set omnifunc=csscomplete#CompleteCSS
   autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-  auto FileType eruby set ft=html
 
   let g:cssColorVimDoNotMessMyUpdatetime = 1
- autocmd FileType html,css,php EmmetInstall
+  autocmd FileType html,css,php EmmetInstall
 
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
@@ -135,7 +137,7 @@ func!Run()
         if expand('%:e') == 'py'
             exec '!clear && python %'
         elseif expand('%:e') == 'vertx'
-            exec '!clear && vertx run %.py'
+            exec '!clear && vertx run %.py'd
         endif
 	elseif &filetype == 'java'
 		exec '!clear && javac % && java %<'
@@ -187,5 +189,7 @@ set nofoldenable
 let mapleader=","
 
 " ropevim configuration
-let ropevim_vim_completion=1
-let ropevim_extended_complete=1
+" let ropevim_vim_completion=1
+" let ropevim_extended_complete=1
+
+" jedi settings
