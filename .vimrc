@@ -6,6 +6,9 @@
 " To use it, copy it to
 "     for Unix and OS/2:  ~
 
+set t_Co=256
+colorscheme molokai
+
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
     finish
@@ -49,7 +52,7 @@ endif
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
-  syntax on
+  " syntax on
   set hlsearch
 endif
 
@@ -138,7 +141,7 @@ func!Run()
         if expand('%:e') == 'py'
             exec '!clear && python %'
         elseif expand('%:e') == 'vertx'
-            exec '!clear && vertx run %.py'
+            exec '!clear && vertx run %.py'd
         endif
 	elseif &filetype == 'java'
 		exec '!clear && javac % && java %<'
