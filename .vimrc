@@ -11,8 +11,7 @@ if v:progname =~? "evim"
     finish
 endif
 
-set t_Co=256
-colorscheme molokai
+set t_Co=2
 
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
@@ -50,7 +49,7 @@ endif
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
-  " syntax on
+  syntax on
   set hlsearch
 endif
 
@@ -65,11 +64,13 @@ if has("autocmd")
   set nocp
   filetype plugin indent on
   autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-  autocmd FileType python set omnifunc=pythoncomplete#Complete
+  " autocmd FileType python set omnifunc=pythoncomplete#Complete
   autocmd FileType python setlocal omnifunc=RopeCompleteFunc
   autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
   autocmd FileType css set omnifunc=csscomplete#CompleteCSS
   autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+
+  autocmd FileType python setlocal commentstring=#\ %s
 
   let g:cssColorVimDoNotMessMyUpdatetime = 1
   autocmd FileType html,css,php EmmetInstall
@@ -139,7 +140,7 @@ func!Run()
         if expand('%:e') == 'py'
             exec '!clear && python %'
         elseif expand('%:e') == 'vertx'
-            exec '!clear && vertx run %.py'd
+            exec '!clear && vertx run %.py'
         endif
 	elseif &filetype == 'java'
 		exec '!clear && javac % && java %<'
@@ -147,6 +148,8 @@ func!Run()
 		exec '!clear && $LUA %'
     elseif &filetype == 'php'
         exec '!clear && php %'
+    elseif &filetype == 'javascript'
+        exec '!clear && node %'
 	endif
 endfunc
 
@@ -196,18 +199,17 @@ let ropevim_extended_complete=1
 let ropevim_enable_autoimport=1
 let ropevim_enable_shortcuts=1
 let ropevim_guess_project=1
-let ropevim_open_files_in_tabs = 1
-" Above rope setting maybe useless since rope was introduced by pymode
-let pymode_rope_goto_definition_cmd='e'
+let ropevim_open_files_in_tabs=1
+let ropevim_goto_def_newwin='vnew'
+" let pymode_rope_goto_definition_cmd='e'
 set <M-/>=/
 set <M-?>=?
+
 " map <M-/> :call RopeCodeAssist()<CR>
 " map <M-?> :call RopeLuckyAssist()<CR>
 
-" python-mode setting 
-let g:pymode_options_colorcolumn = 0
-
 " powerline settings
-let g:Powerline_symbols='fancy'
+" let g:Powerline_symbols='fancy'
 
 execute pathogen#infect()
+
