@@ -6,15 +6,13 @@
 " To use it, copy it to
 "     for Unix and OS/2:  ~
 
-set t_Co=256
-colorscheme molokai
-
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
     finish
 endif
 
-set t_Co=2
+set t_Co=256
+colorscheme molokai
 
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
