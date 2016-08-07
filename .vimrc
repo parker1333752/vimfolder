@@ -68,7 +68,7 @@ if has("autocmd")
   autocmd FileType python setlocal omnifunc=RopeCompleteFunc
   autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
   autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-  autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType javascript set omnifunc=tern#Complete
 
   autocmd FileType python setlocal commentstring=#\ %s
 
@@ -78,9 +78,6 @@ if has("autocmd")
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
   au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
@@ -112,6 +109,10 @@ if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
 		  \ | wincmd p | diffthis
 endif
+
+inoremap {<CR> {<CR>}<ESC>ko
+nnoremap <C-n> :w<CR>:bn<CR>
+nnoremap <C-N> :w<CR>:bN<CR>
 
 set tabstop=4
 set shiftwidth=4
@@ -183,11 +184,6 @@ let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif 
 set completeopt=menuone,menu,longest
 
-imap<C-k> <C-x><C-o>
-inoremap {<CR> {<CR>}<ESC>ko
-nnoremap <C-n> :w<CR>:bn<CR>
-nnoremap <C-N> :w<CR>:bN<CR>
-
 " ctrlp settings
 set laststatus=2
 let g:ctrlp_max_height = 30
@@ -205,8 +201,8 @@ let ropevim_goto_def_newwin='vnew'
 set <M-/>=/
 set <M-?>=?
 
-" map <M-/> :call RopeCodeAssist()<CR>
-" map <M-?> :call RopeLuckyAssist()<CR>
+" tern_for_vim config
+let tern_show_signature_in_pum = 1
 
 " powerline settings
 " let g:Powerline_symbols='fancy'
