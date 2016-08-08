@@ -72,6 +72,8 @@ if has("autocmd")
 
   autocmd FileType python setlocal commentstring=#\ %s
 
+  autocmd FileType python setlocal commentstring=#\ %s
+
   let g:cssColorVimDoNotMessMyUpdatetime = 1
   autocmd FileType html,css,php EmmetInstall
 
@@ -101,6 +103,8 @@ else
   set autoindent		" always set autoindenting on
 
 endif " has("autocmd")
+
+execute pathogen#infect()
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -190,7 +194,7 @@ let g:ctrlp_max_height = 30
 set nofoldenable
 
 " ropevim configuration
-" let ropevim_vim_completion=1
+let ropevim_vim_completion=1
 let ropevim_extended_complete=1
 let ropevim_enable_autoimport=1
 let ropevim_enable_shortcuts=1
