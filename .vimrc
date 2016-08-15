@@ -11,7 +11,8 @@ if v:progname =~? "evim"
     finish
 endif
 
-set t_Co=2
+set t_Co=256
+colorscheme molokai
 
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
@@ -72,8 +73,6 @@ if has("autocmd")
 
   autocmd FileType python setlocal commentstring=#\ %s
 
-  autocmd FileType python setlocal commentstring=#\ %s
-
   let g:cssColorVimDoNotMessMyUpdatetime = 1
   autocmd FileType html,css,php EmmetInstall
 
@@ -112,6 +111,7 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
+inoremap <C-k> <C-x><C-o>
 inoremap {<CR> {<CR>}<ESC>ko
 nnoremap <C-n> :w<CR>:bn<CR>
 nnoremap <C-N> :w<CR>:bN<CR>
@@ -186,12 +186,12 @@ let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif 
 set completeopt=menuone,menu,longest
 
-" ctrlp settings
+" ctrlp config
 set laststatus=2
 let g:ctrlp_max_height = 30
 set nofoldenable
 
-" ropevim configuration
+" ropevim config
 let ropevim_vim_completion=1
 let ropevim_extended_complete=1
 let ropevim_enable_autoimport=1
@@ -200,14 +200,34 @@ let ropevim_guess_project=1
 let ropevim_open_files_in_tabs=1
 let ropevim_goto_def_newwin='vnew'
 " let pymode_rope_goto_definition_cmd='e'
-set <M-/>=/
-set <M-?>=?
+" set <M-/>=/
+" set <M-?>=?
 
 " tern_for_vim config
 let tern_show_signature_in_pum = 1
 
-" powerline settings
+" powerline config
 " let g:Powerline_symbols='fancy'
+
+" JSHint config
+let jshint2_read = 1
+let jshint2_save = 1
+let jshint2_close = 1 " auto close orphaned error lists.
+let jslint2_confirm = 0
+let jslint2_color = 1 " use colored messages.
+let jslint2_error = 1 " enable error code.
+let jslint2_min_height = 3
+let jslint2_max_height = 12
+
+" Syntastic config
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
 
 execute pathogen#infect()
 
