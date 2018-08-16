@@ -267,6 +267,7 @@ let jslint2_min_height = 3
 let jslint2_max_height = 12
 
 " Syntastic config
+set statusline=%f%h%m%r\ (%{strftime(\"%d/%m/%Y\ %H:%M\",getftime(expand(\"%:p\")))})%=Line\ %l\/%L(%p%%),\ Col\ %-4v\ [%{&ff}]
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
