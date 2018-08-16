@@ -276,6 +276,10 @@ let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
+let Tlist_Show_One_File = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_Use_Right_Window = 1
+
 " settings for git bash show block cursor
 let &t_ti.="\e[2 q"
 let &t_SI.="\e[6 q"
