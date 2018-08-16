@@ -76,6 +76,8 @@ if has("autocmd")
   let g:cssColorVimDoNotMessMyUpdatetime = 1
   autocmd FileType html,css,php EmmetInstall
 
+  "autocmd BufWritePost *.c,*h,*.cpp silent call UpdateCscope()
+
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
   au!
@@ -89,6 +91,9 @@ if has("autocmd")
     \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \   exe "normal! g`\"" |
     \ endif
+
+  au BufEnter *.cpp,*.c,*.h call Open101Check()
+  au BufLeave *.cpp,*.c,*.h call Close101Check()
 
   augroup END
 
@@ -114,23 +119,48 @@ endif
 inoremap <C-k> <C-x><C-o>
 inoremap {<CR> {<CR>}<ESC>ko
 nnoremap <C-n> :w<CR>:bn<CR>
-nnoremap <C-N> :w<CR>:bN<CR>
+nnoremap <A-n> :w<CR>:bN<CR>
+nnoremap <C-H> :A<CR>
+nnoremap <F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+nnoremap <C-S> :w<CR>
+nnoremap <C-C> y
 
 set tabstop=4
 set shiftwidth=4
 set expandtab
 set nu
+set cul
 set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 set termencoding=utf-8
+set fileencoding=utf-8  
 set encoding=utf-8
-map<F6> :vertical-res -5<CR>
-map<F7> :vertical-res +5<CR>
+set colorcolumn=100
+map<F6> :vertical-res +5<CR>
+map<F7> :vertical-res -5<CR>
 map<F5> :call Openvimrc()<CR>
 func! Openvimrc()
     exec 'w'
     exec 'e ~/.vimrc'
 endfunc
-map<F2> :call Run()<CR>
+" nnoremap<F2> :call Run()<CR>
+nnoremap<F2> <C-]>
+nnoremap<C-F2> g<C-]>
+
+func!Open101Check()
+    if &filetype == 'cpp' || &filetype == 'c' || &filetype == 'h'
+        if !exists('w:m2') 
+            let w:m2=matchadd('ErrorMsg', '\%>100v.\+', -1, 101)
+        endif
+    endif
+endfunc
+
+func!Close101Check()
+    if exists('w:m2') 
+        call matchdelete(101)
+        unlet w:m2
+    endif
+endfunc
+
 func!Run()
 	exec 'w'
     if &filetype == 'sh'
@@ -156,24 +186,41 @@ func!Run()
 	endif
 endfunc
 
+function!UpdateCscope()
+    set nocsverb
+
+    if !filereadable('./cscope.out')
+        return
+    endif
+
+    cs kill -1 
+    exec ''
+    exec '!cscope -Rbkq'
+    cs add cscope.out 
+    exec ''
+endfunc
+
+cs add /e/code/baidu/duer/cscope.out /e/code/baidu/duer/
+
 " filetype plugin on
 let g:user_emmet_install_global = 0
 "let g:user_emmet_leader_key='<C-D>'
 let g:user_emmet_expandabbr_key='<C-e>'
-let g:user_emmet_settings={
-\'php':{
-    \'extends':'html',
-    \'filters':'c',
-\},
-\'xml':{
-    \'extends':'html',
-\},
-\}
+" let g:user_emmet_settings={
+" \'php':{
+    " \'extends':'html',
+    " \'filters':'c',
+" \},
+" \'xml':{
+    " \'extends':'html',
+" \},
+" \}
  
-nnoremap<F3> :NERDTreeToggle<CR>
+"nnoremap<C-O> :NERDTreeToggle<CR>
 let NERDTreeMouseMode = 3
 
 set tags+=/home/lisijun/Ccode/stl/tags
+set tags+=.tags
 let OmniCpp_NamespaceSearch = 1
 let OmniCpp_GlobalScopeSearch = 1
 let OmniCpp_ShowAccess = 1 
@@ -224,10 +271,30 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+
+" settings for git bash show block cursor
+let &t_ti.="\e[2 q"
+let &t_SI.="\e[6 q"
+let &t_EI.="\e[2 q"
+let &t_te.="\e[0 q"
 
 execute pathogen#infect()
+
+func! Build()
+    exec '!mbed compile --source lightduer-os-for-mbed-demo --source mbed-os/ --source lightduer-os-for-mbed --source libduer-device/ -t ARM -m UNO_81C -DCUSTOM_SSID=\"iottest\" -DCUSTOM_PASSWD=\"12345678\" -DENABLE_ALERT -DMBED_HEAP_STATS_ENABLED -DUSE_ALERT_FLASH '
+    "exec '!mbed compile --source lightduer-os-for-mbed-demo --source mbed-os/ --source lightduer-os-for-mbed --source libduer-device/ -t ARM -m UNO_81C -DCUSTOM_SSID=\"Jt9Y9482\" -DCUSTOM_PASSWD=\"p1Ebh3NcbBoXbsuX\" -DENABLE_ALERT -DMBED_HEAP_STATS_ENABLED -DUSE_ALERT_FLASH '
+endfunc
+
+func! Buildc()
+    exec '!mbed compile --source lightduer-os-for-mbed-demo --source mbed-os/ --source lightduer-os-for-mbed --source libduer-device/ -t ARM -m UNO_81C -DCUSTOM_SSID=\"iottest\" -DCUSTOM_PASSWD=\"12345678\" -DENABLE_ALERT -DMBED_HEAP_STATS_ENABLED -DUSE_ALERT_FLASH  -c'
+    "exec '!mbed compile --source lightduer-os-for-mbed-demo --source mbed-os/ --source lightduer-os-for-mbed --source libduer-device/ -t ARM -m UNO_81C -DCUSTOM_SSID=\"Jt9Y9482\" -DCUSTOM_PASSWD=\"p1Ebh3NcbBoXbsuX\" -DENABLE_ALERT -DMBED_HEAP_STATS_ENABLED -DUSE_ALERT_FLASH  -c'
+endfunc
+
+command! -n=0 Build :call Build()
+command! -n=0 Buildc :call Buildc()
+command! -n=0 Update :call UpdateCscope()
 
